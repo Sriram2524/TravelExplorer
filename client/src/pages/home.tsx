@@ -76,12 +76,14 @@ export default function Home() {
           </div>
           
           {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in-up">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="bg-muted rounded-lg h-64 mb-4"></div>
-                  <div className="bg-muted rounded h-4 mb-2"></div>
-                  <div className="bg-muted rounded h-4 w-2/3"></div>
+                <div key={i} className="skeleton-enhanced rounded-2xl overflow-hidden shadow-lg animate-bounce-gentle" style={{animationDelay: `${i * 0.1}s`}}>
+                  <div className="skeleton-enhanced h-64 mb-4 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                  <div className="p-6">
+                    <div className="skeleton-enhanced rounded-lg h-6 mb-3 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                    <div className="skeleton-enhanced rounded-lg h-4 w-2/3 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200"></div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -92,6 +94,7 @@ export default function Home() {
               </p>
             </div>
           ) : (
+            <div className="animate-fade-in-up">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {destinations.map((destination) => (
                 <DestinationCard

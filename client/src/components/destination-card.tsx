@@ -18,22 +18,23 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
 
   return (
     <Card 
-      className="destination-card bg-card rounded-lg shadow-lg overflow-hidden cursor-pointer"
+      className="destination-card bg-card rounded-2xl shadow-xl overflow-hidden cursor-pointer transform transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:rotate-1 group border-0"
       data-testid={`card-destination-${destination.id}`}
+      onClick={handleViewDetails}
     >
-      <div className="relative h-64">
+      <div className="relative h-64 overflow-hidden">
         <img 
           src={destination.imageUrl} 
           alt={destination.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           data-testid={`img-destination-${destination.id}`}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        <div className="absolute bottom-4 left-4 text-white">
-          <h3 className="text-xl font-semibold" data-testid={`text-name-${destination.id}`}>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 transition-opacity duration-500 group-hover:from-black/70"></div>
+        <div className="absolute bottom-4 left-4 text-white transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+          <h3 className="text-xl font-semibold drop-shadow-lg" data-testid={`text-name-${destination.id}`}>
             {destination.name}
           </h3>
-          <p className="text-sm opacity-90" data-testid={`text-region-${destination.id}`}>
+          <p className="text-sm opacity-90 drop-shadow-md" data-testid={`text-region-${destination.id}`}>
             {destination.region}
           </p>
         </div>
@@ -41,7 +42,7 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
           <Button
             variant="ghost"
             size="sm"
-            className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-white/30 transition-colors"
+            className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-red-500/80 hover:text-white transition-all duration-300 transform hover:scale-110 hover:rotate-12 group-hover:animate-bounce"
             data-testid={`button-favorite-${destination.id}`}
           >
             <Heart className="h-4 w-4" />
@@ -49,7 +50,7 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
         </div>
       </div>
       
-      <CardContent className="p-6">
+      <CardContent className="p-6 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
         <p className="text-muted-foreground mb-4" data-testid={`text-description-${destination.id}`}>
           {destination.description}
         </p>
@@ -65,11 +66,11 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
           </div>
           <Button
             variant="ghost"
-            className="text-primary hover:text-primary/80 font-medium p-0"
+            className="text-primary hover:text-primary/80 font-medium p-0 group/btn transition-all duration-300 hover:bg-primary/10 px-3 py-2 rounded-lg"
             onClick={handleViewDetails}
             data-testid={`button-view-details-${destination.id}`}
           >
-            View Details <ArrowRight className="ml-1 h-4 w-4" />
+            View Details <ArrowRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
           </Button>
         </div>
       </CardContent>
