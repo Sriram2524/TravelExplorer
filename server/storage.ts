@@ -303,7 +303,7 @@ export class DatabaseStorage implements IStorage {
   async createTripPlan(insertTripPlan: InsertTripPlan): Promise<TripPlan> {
     const id = randomUUID();
     const now = new Date();
-    const tripPlan: TripPlan = { ...insertTripPlan, id, createdAt: now, updatedAt: now };
+    const tripPlan: TripPlan = { ...insertTripPlan, id, createdAt: now, updatedAt: now, description: insertTripPlan.description ?? null };
     this.tripPlans.set(id, tripPlan);
     return tripPlan;
   }
@@ -331,7 +331,7 @@ export class DatabaseStorage implements IStorage {
 
   async addDestinationToTripPlan(insertTripPlanDestination: InsertTripPlanDestination): Promise<TripPlanDestination> {
     const id = randomUUID();
-    const tripPlanDestination: TripPlanDestination = { ...insertTripPlanDestination, id, addedAt: new Date() };
+    const tripPlanDestination: TripPlanDestination = { ...insertTripPlanDestination, id, addedAt: new Date(), notes: insertTripPlanDestination.notes ?? null };
     this.tripPlanDestinations.set(id, tripPlanDestination);
     return tripPlanDestination;
   }

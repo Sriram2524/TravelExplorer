@@ -19,7 +19,6 @@ export default function Home() {
   });
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState("");
 
   // Build query params based on active filters
   const buildQueryParams = () => {
@@ -52,12 +51,6 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
-  const handleSubscribe = () => {
-    if (email) {
-      console.log("Subscribing email:", email);
-      setEmail("");
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,37 +151,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-16 bg-primary text-primary-foreground" data-testid="newsletter-section">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Stay Inspired</h2>
-          <p className="text-xl mb-8 opacity-90">
-            Get travel tips, destination guides, and exclusive deals delivered to your inbox
-          </p>
-          
-          <div className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
-            <Input
-              type="email"
-              placeholder="Enter your email address"
-              className="flex-1 bg-white text-foreground border-0"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              data-testid="input-newsletter-email"
-            />
-            <Button 
-              className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3"
-              onClick={handleSubscribe}
-              data-testid="button-subscribe"
-            >
-              Subscribe
-            </Button>
-          </div>
-          
-          <p className="text-sm opacity-80 mt-4">
-            No spam, unsubscribe at any time
-          </p>
-        </div>
-      </section>
 
       {/* Footer */}
       <footer className="bg-card text-card-foreground py-12 border-t border-border" data-testid="footer">
