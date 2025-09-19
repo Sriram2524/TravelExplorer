@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Compass, Menu, Heart } from "lucide-react";
+import { Compass, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useState } from "react";
@@ -41,12 +41,6 @@ export default function Navigation() {
       onClick: () => handleNavigation('destinations-section')
     },
     { 
-      href: "/favorites", 
-      label: "Favorites", 
-      active: location === "/favorites",
-      onClick: () => setIsMobileMenuOpen(false)
-    },
-    { 
       href: "/#features-section", 
       label: "About", 
       active: isHome && currentHash === "#features-section",
@@ -79,7 +73,6 @@ export default function Navigation() {
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                     <span className="relative z-10">
-                      {item.label === "Favorites" && <Heart className="inline mr-1 h-4 w-4" />}
                       {item.label}
                     </span>
                   </button>
@@ -96,7 +89,6 @@ export default function Navigation() {
                   >
                     <span className="absolute inset-0 bg-gradient-to-r from-primary/10 to-secondary/10 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                     <span className="relative z-10">
-                      {item.label === "Favorites" && <Heart className="inline mr-1 h-4 w-4" />}
                       {item.label}
                     </span>
                   </Link>
@@ -126,7 +118,6 @@ export default function Navigation() {
                         }`}
                         data-testid={`mobile-link-${item.label.toLowerCase()}`}
                       >
-                        {item.label === "Favorites" && <Heart className="inline mr-2 h-4 w-4" />}
                         {item.label}
                       </button>
                     ) : (
@@ -140,7 +131,6 @@ export default function Navigation() {
                         }`}
                         data-testid={`mobile-link-${item.label.toLowerCase()}`}
                       >
-                        {item.label === "Favorites" && <Heart className="inline mr-2 h-4 w-4" />}
                         {item.label}
                       </Link>
                     )
