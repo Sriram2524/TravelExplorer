@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
@@ -51,12 +51,27 @@ export default function Home() {
     setIsModalOpen(true);
   };
 
+  // Handle hash scrolling when landing on the page
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const element = document.getElementById(hash.slice(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <HeroSection onSearch={handleSearch} />
+      <div id="hero-section" className="scroll-mt-16 md:scroll-mt-20">
+        <HeroSection onSearch={handleSearch} />
+      </div>
       
       <FilterSection 
         activeFilter={activeFilter}
@@ -64,7 +79,7 @@ export default function Home() {
       />
 
       {/* Popular Destinations */}
-      <section className="py-16 bg-background" data-testid="destinations-section">
+      <section id="destinations-section" className="py-16 bg-background scroll-mt-16 md:scroll-mt-20" data-testid="destinations-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="text-destinations-title">
@@ -110,7 +125,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-muted" data-testid="features-section">
+      <section id="features-section" className="py-16 bg-muted scroll-mt-16 md:scroll-mt-20" data-testid="features-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4">
