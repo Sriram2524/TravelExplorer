@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Calendar } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +10,6 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onSearch }: HeroSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [travelDates, setTravelDates] = useState("");
 
   const handleSearch = () => {
     onSearch(searchQuery);
@@ -42,8 +41,8 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
           Explore breathtaking destinations around the world
         </p>
         
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 max-w-2xl mx-auto border border-white/20 animate-fade-in-up delay-500 hover:shadow-3xl transition-all duration-500 hover:scale-105">
-          <div className="flex flex-col md:flex-row gap-4">
+        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 max-w-xl mx-auto border border-white/20 animate-fade-in-up delay-500 hover:shadow-3xl transition-all duration-500 hover:scale-105">
+          <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <Label className="block text-sm font-medium text-muted-foreground mb-2">
                 Where to?
@@ -61,25 +60,9 @@ export default function HeroSection({ onSearch }: HeroSectionProps) {
                 />
               </div>
             </div>
-            <div className="flex-1">
-              <Label className="block text-sm font-medium text-muted-foreground mb-2">
-                Travel dates
-              </Label>
-              <div className="relative">
-                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  type="text"
-                  placeholder="Add dates"
-                  className="pl-10"
-                  value={travelDates}
-                  onChange={(e) => setTravelDates(e.target.value)}
-                  data-testid="input-dates"
-                />
-              </div>
-            </div>
             <div className="flex items-end">
               <Button 
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-4 focus:ring-blue-300/50"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-lg focus:ring-4 focus:ring-blue-300/50 w-full sm:w-auto"
                 onClick={handleSearch}
                 data-testid="button-search"
               >

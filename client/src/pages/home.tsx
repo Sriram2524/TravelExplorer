@@ -172,7 +172,7 @@ export default function Home() {
 
 
       {/* Footer */}
-      <footer className="bg-card text-card-foreground py-12 border-t border-border" data-testid="footer">
+      <footer className="bg-gradient-to-br from-slate-800 to-slate-900 text-white py-12 border-t border-slate-700" data-testid="footer">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>

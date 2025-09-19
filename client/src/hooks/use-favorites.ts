@@ -36,13 +36,10 @@ export function useFavorites() {
 
   const toggleFavorite = useCallback((destinationId: string) => {
     setFavorites(prev => {
-      if (prev.includes(destinationId)) {
-        // Remove from favorites
-        return prev.filter(id => id !== destinationId);
-      } else {
-        // Add to favorites
-        return [...prev, destinationId];
-      }
+      const newFavorites = prev.includes(destinationId) 
+        ? prev.filter(id => id !== destinationId)
+        : [...prev, destinationId];
+      return newFavorites;
     });
   }, []);
 
