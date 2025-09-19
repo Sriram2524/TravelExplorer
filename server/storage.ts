@@ -162,7 +162,7 @@ export class DatabaseStorage implements IStorage {
         country: "Iceland",
         description: "Witness the magical Northern Lights, explore dramatic waterfalls, and relax in geothermal hot springs.",
         longDescription: "Iceland is a Nordic island country known for its dramatic landscapes, including volcanoes, geysers, hot springs, and lava fields. The country offers unique natural phenomena like the Northern Lights and midnight sun, along with stunning waterfalls, black sand beaches, and glacier lagoons. It's a paradise for nature lovers and adventure seekers.",
-        imageUrl: "https://images.unsplash.com/photo-1539066909447-699d3242bbdd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+        imageUrl: "https://images.unsplash.com/photo-1551524164-6cf31e4ab5e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
         galleryImages: [
           "https://images.unsplash.com/photo-1476610182048-b716b8518aae?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
           "https://images.unsplash.com/photo-1551524164-6cf31e4ab5e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300",
