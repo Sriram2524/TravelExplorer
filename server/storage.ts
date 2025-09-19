@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import { 
   type User, type InsertUser, 
   type Destination, type InsertDestination,
@@ -42,6 +43,12 @@ export interface IStorage {
 }
 
 export class DatabaseStorage implements IStorage {
+  private users = new Map<string, User>();
+  private destinations = new Map<string, Destination>();
+  private userFavorites = new Map<string, UserFavorite>();
+  private tripPlans = new Map<string, TripPlan>();
+  private tripPlanDestinations = new Map<string, TripPlanDestination>();
+
   constructor() {
     this.initializeDestinations();
   }
@@ -252,6 +259,91 @@ export class DatabaseStorage implements IStorage {
       destination.tags.some(tag => tag.toLowerCase().includes(searchTerm))
     );
   }
+
+  // Favorites management
+  async getUserFavorites(userId: string): Promise<UserFavorite[]> {
+    return Array.from(this.userFavorites.values()).filter(
+      favorite => favorite.userId === userId
+    );
+  }
+
+  async addToFavorites(insertFavorite: InsertUserFavorite): Promise<UserFavorite> {
+    const id = randomUUID();
+    const favorite: UserFavorite = { ...insertFavorite, id, createdAt: new Date() };
+    this.userFavorites.set(id, favorite);
+    return favorite;
+  }
+
+  async removeFromFavorites(userId: string, destinationId: string): Promise<void> {
+    for (const [id, favorite] of Array.from(this.userFavorites.entries())) {
+      if (favorite.userId === userId && favorite.destinationId === destinationId) {
+        this.userFavorites.delete(id);
+        break;
+      }
+    }
+  }
+
+  async isFavorited(userId: string, destinationId: string): Promise<boolean> {
+    return Array.from(this.userFavorites.values()).some(
+      favorite => favorite.userId === userId && favorite.destinationId === destinationId
+    );
+  }
+
+  // Trip planning
+  async getUserTripPlans(userId: string): Promise<TripPlan[]> {
+    return Array.from(this.tripPlans.values()).filter(
+      plan => plan.userId === userId
+    );
+  }
+
+  async getTripPlan(id: string): Promise<TripPlan | undefined> {
+    return this.tripPlans.get(id);
+  }
+
+  async createTripPlan(insertTripPlan: InsertTripPlan): Promise<TripPlan> {
+    const id = randomUUID();
+    const now = new Date();
+    const tripPlan: TripPlan = { ...insertTripPlan, id, createdAt: now, updatedAt: now };
+    this.tripPlans.set(id, tripPlan);
+    return tripPlan;
+  }
+
+  async updateTripPlan(id: string, updates: Partial<InsertTripPlan>): Promise<TripPlan> {
+    const existing = this.tripPlans.get(id);
+    if (!existing) {
+      throw new Error(`Trip plan with id ${id} not found`);
+    }
+    const updated: TripPlan = { ...existing, ...updates, updatedAt: new Date() };
+    this.tripPlans.set(id, updated);
+    return updated;
+  }
+
+  async deleteTripPlan(id: string): Promise<void> {
+    this.tripPlans.delete(id);
+  }
+
+  // Trip plan destinations
+  async getTripPlanDestinations(tripPlanId: string): Promise<TripPlanDestination[]> {
+    return Array.from(this.tripPlanDestinations.values()).filter(
+      dest => dest.tripPlanId === tripPlanId
+    );
+  }
+
+  async addDestinationToTripPlan(insertTripPlanDestination: InsertTripPlanDestination): Promise<TripPlanDestination> {
+    const id = randomUUID();
+    const tripPlanDestination: TripPlanDestination = { ...insertTripPlanDestination, id, addedAt: new Date() };
+    this.tripPlanDestinations.set(id, tripPlanDestination);
+    return tripPlanDestination;
+  }
+
+  async removeDestinationFromTripPlan(tripPlanId: string, destinationId: string): Promise<void> {
+    for (const [id, dest] of Array.from(this.tripPlanDestinations.entries())) {
+      if (dest.tripPlanId === tripPlanId && dest.destinationId === destinationId) {
+        this.tripPlanDestinations.delete(id);
+        break;
+      }
+    }
+  }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
