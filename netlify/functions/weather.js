@@ -6,6 +6,7 @@ export async function handler(event, context) {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Content-Type': 'application/json',
   };
 
   // Handle preflight requests
@@ -39,7 +40,23 @@ export async function handler(event, context) {
       };
     }
 
-    const apiKey = process.env.OPENWEATHER_API_KEY || process.env.WEATHER_API_KEY || "demo_key";
+    const apiKey = process.env.OPENWEATHER_API_KEY || process.env.WEATHER_API_KEY;
+    
+    // If no API key is configured, return fallback data immediately
+    if (!apiKey || apiKey === "demo_key") {
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          temperature: 24,
+          condition: "Sunny",
+          description: "Clear sky",
+          humidity: 65,
+          windSpeed: 12,
+          icon: "01d"
+        }),
+      };
+    }
       
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
