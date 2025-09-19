@@ -31,7 +31,7 @@ export default function Navigation() {
     { 
       href: "/#hero-section", 
       label: "Home", 
-      active: isHome && (currentHash === "#hero-section" || currentHash === ""),
+      active: isHome && (currentHash === "#hero-section" || currentHash === "" || currentHash === "#"),
       onClick: () => handleNavigation('hero-section')
     },
     { 

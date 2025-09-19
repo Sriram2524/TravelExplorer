@@ -32,7 +32,7 @@ export default function DestinationDetail({ destination, isOpen, onClose }: Dest
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-6xl w-full max-h-[90vh] overflow-y-auto p-0"
+        className="max-w-6xl w-full max-h-[90vh] overflow-y-auto p-0 !top-[10%] !translate-y-0"
         data-testid="destination-detail-modal"
       >
         {/* Modal Header */}
