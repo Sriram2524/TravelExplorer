@@ -1,25 +1,48 @@
-import { type User, type InsertUser, type Destination, type InsertDestination } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { 
+  type User, type InsertUser, 
+  type Destination, type InsertDestination,
+  type UserFavorite, type InsertUserFavorite,
+  type TripPlan, type InsertTripPlan,
+  type TripPlanDestination, type InsertTripPlanDestination
+} from "@shared/schema";
+import { db } from "./db";
+import { users, destinations, userFavorites, tripPlans, tripPlanDestinations } from "@shared/schema";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
+  // User management
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   
+  // Destination management
   getAllDestinations(): Promise<Destination[]>;
   getDestination(id: string): Promise<Destination | undefined>;
   getDestinationsByRegion(region: string): Promise<Destination[]>;
   getDestinationsByTag(tag: string): Promise<Destination[]>;
   searchDestinations(query: string): Promise<Destination[]>;
+  
+  // Favorites management
+  getUserFavorites(userId: string): Promise<UserFavorite[]>;
+  addToFavorites(favorite: InsertUserFavorite): Promise<UserFavorite>;
+  removeFromFavorites(userId: string, destinationId: string): Promise<void>;
+  isFavorited(userId: string, destinationId: string): Promise<boolean>;
+  
+  // Trip planning
+  getUserTripPlans(userId: string): Promise<TripPlan[]>;
+  getTripPlan(id: string): Promise<TripPlan | undefined>;
+  createTripPlan(tripPlan: InsertTripPlan): Promise<TripPlan>;
+  updateTripPlan(id: string, updates: Partial<InsertTripPlan>): Promise<TripPlan>;
+  deleteTripPlan(id: string): Promise<void>;
+  
+  // Trip plan destinations
+  getTripPlanDestinations(tripPlanId: string): Promise<TripPlanDestination[]>;
+  addDestinationToTripPlan(tripPlanDestination: InsertTripPlanDestination): Promise<TripPlanDestination>;
+  removeDestinationFromTripPlan(tripPlanId: string, destinationId: string): Promise<void>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private destinations: Map<string, Destination>;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.destinations = new Map();
     this.initializeDestinations();
   }
 
