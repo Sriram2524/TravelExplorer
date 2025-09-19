@@ -2,11 +2,22 @@ import { Link, useLocation } from "wouter";
 import { Compass, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Navigation() {
   const [location, navigate] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
+
+  // Listen for hash changes to update navigation highlighting
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentHash(window.location.hash);
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const handleNavigation = (sectionId: string) => {
     setIsMobileMenuOpen(false); // Close mobile menu
@@ -20,12 +31,13 @@ export default function Navigation() {
         element.scrollIntoView({ behavior: 'smooth' });
         // Update URL hash for deep linking and active states
         window.history.replaceState(null, '', `/#${sectionId}`);
+        // Manually update the hash state since replaceState doesn't trigger hashchange
+        setCurrentHash(`#${sectionId}`);
       }
     }
   };
 
   const isHome = location === "/" || location.startsWith("/#");
-  const currentHash = window.location.hash;
 
   const navItems = [
     { 
