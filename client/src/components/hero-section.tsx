@@ -6,13 +6,18 @@ import { Label } from "@/components/ui/label";
 
 interface HeroSectionProps {
   onSearch: (query: string) => void;
+  onDirectSearch?: (query: string) => void;
 }
 
-export default function HeroSection({ onSearch }: HeroSectionProps) {
+export default function HeroSection({ onSearch, onDirectSearch }: HeroSectionProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleSearch = () => {
-    onSearch(searchQuery);
+    if (onDirectSearch) {
+      onDirectSearch(searchQuery);
+    } else {
+      onSearch(searchQuery);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

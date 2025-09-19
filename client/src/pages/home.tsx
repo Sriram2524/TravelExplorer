@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import Navigation from "@/components/navigation";
 import HeroSection from "@/components/hero-section";
 import FilterSection from "@/components/filter-section";
@@ -12,6 +13,7 @@ import { Destination } from "@shared/schema";
 import { FilterState } from "@/types/destination";
 
 export default function Home() {
+  const [, setLocation] = useLocation();
   const [activeFilter, setActiveFilter] = useState<FilterState>({
     region: null,
     tag: null,
@@ -46,6 +48,32 @@ export default function Home() {
     setActiveFilter(prev => ({ ...prev, search: query }));
   };
 
+  const handleDirectSearch = (query: string) => {
+    if (!query.trim()) return;
+    
+    // First try to find an exact match or close match in current destinations
+    const normalizedQuery = query.toLowerCase().trim();
+    const matchingDestination = destinations.find(dest => 
+      dest.name.toLowerCase().includes(normalizedQuery) || 
+      normalizedQuery.includes(dest.name.toLowerCase())
+    );
+    
+    if (matchingDestination) {
+      // Navigate directly to the destination
+      setLocation(`/destination/${matchingDestination.id}`);
+    } else {
+      // Fall back to regular search filtering
+      setActiveFilter(prev => ({ ...prev, search: query }));
+      // Scroll to destinations section to show results
+      setTimeout(() => {
+        const element = document.getElementById('destinations-section');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
   const handleViewDetails = (destination: Destination) => {
     setSelectedDestination(destination);
     setIsModalOpen(true);
@@ -70,7 +98,7 @@ export default function Home() {
       <Navigation />
       
       <div id="hero-section" className="scroll-mt-16 md:scroll-mt-20">
-        <HeroSection onSearch={handleSearch} />
+        <HeroSection onSearch={handleSearch} onDirectSearch={handleDirectSearch} />
       </div>
       
       <FilterSection 
@@ -180,19 +208,19 @@ export default function Home() {
                 <Search className="text-primary text-2xl mr-2" />
                 <span className="text-xl font-bold">Travel Explorer</span>
               </div>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-gray-300 mb-4">
                 Discover amazing destinations and plan unforgettable adventures around the world.
               </p>
               <div className="flex space-x-4">
-                <Button variant="ghost" size="sm" data-testid="link-social-facebook">
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" data-testid="link-social-twitter">
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" data-testid="link-social-instagram">
-                  <ExternalLink className="h-4 w-4" />
-                </Button>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors" data-testid="link-social-facebook">
+                  <ExternalLink className="h-5 w-5" />
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-blue-400 transition-colors" data-testid="link-social-twitter">
+                  <ExternalLink className="h-5 w-5" />
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-400 transition-colors" data-testid="link-social-instagram">
+                  <ExternalLink className="h-5 w-5" />
+                </a>
               </div>
             </div>
             
@@ -230,7 +258,7 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="border-t border-border pt-8 mt-8 text-center text-muted-foreground">
+          <div className="border-t border-slate-600 pt-8 mt-8 text-center text-gray-300">
             <p>&copy; 2024 Travel Explorer. All rights reserved.</p>
           </div>
         </div>
