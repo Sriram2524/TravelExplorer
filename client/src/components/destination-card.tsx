@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Destination } from "@shared/schema";
 import { useLocation } from "wouter";
 import { useFavorites } from "@/hooks/use-favorites";
+import MiniWeather from "@/components/mini-weather";
 
 interface DestinationCardProps {
   destination: Destination;
@@ -60,6 +61,11 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
             <Heart className={`h-4 w-4 ${isFavorite(destination.id) ? 'fill-current' : ''}`} />
           </Button>
         </div>
+        <MiniWeather 
+          latitude={destination.latitude}
+          longitude={destination.longitude}
+          destinationId={destination.id}
+        />
       </div>
       
       <CardContent className="p-6 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
