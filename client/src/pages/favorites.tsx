@@ -3,28 +3,32 @@ import Navigation from "@/components/navigation";
 import DestinationCard from "@/components/destination-card";
 import DestinationDetail from "@/components/destination-detail";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "wouter";
 import { Destination } from "@shared/schema";
+import { useFavorites } from "@/hooks/use-favorites";
 
 export default function Favorites() {
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { favorites: favoriteIds } = useFavorites();
 
-  // For now, we'll simulate favorite destinations
-  // In a real app, this would come from user preferences/database
-  const { data: favorites = [], isLoading } = useQuery<Destination[]>({
-    queryKey: ["/api/destinations"], // We'll filter favorites on the frontend for now
+  // Fetch all destinations and filter by favorites
+  const { data: allDestinations = [], isLoading } = useQuery<Destination[]>({
+    queryKey: ["/api/destinations"],
     queryFn: async () => {
       const response = await fetch("/api/destinations");
       if (!response.ok) {
         throw new Error("Failed to fetch destinations");
       }
-      const allDestinations = await response.json();
-      // For demo purposes, show first 3 destinations as favorites
-      return allDestinations.slice(0, 3);
+      return response.json();
     },
   });
+
+  // Filter destinations to only include favorites
+  const favorites = useMemo(() => {
+    return allDestinations.filter(destination => favoriteIds.includes(destination.id));
+  }, [allDestinations, favoriteIds]);
 
   const handleViewDetails = (destination: Destination) => {
     setSelectedDestination(destination);
