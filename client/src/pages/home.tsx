@@ -95,7 +95,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="animate-fade-in-up">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {destinations.map((destination) => (
                 <DestinationCard
                   key={destination.id}
@@ -103,6 +103,7 @@ export default function Home() {
                   onViewDetails={handleViewDetails}
                 />
               ))}
+              </div>
             </div>
           )}
         </div>
