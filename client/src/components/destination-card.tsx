@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Destination } from "@shared/schema";
 import { useLocation } from "wouter";
+import { useFavorites } from "@/hooks/use-favorites";
 
 interface DestinationCardProps {
   destination: Destination;
@@ -11,9 +12,15 @@ interface DestinationCardProps {
 
 export default function DestinationCard({ destination, onViewDetails }: DestinationCardProps) {
   const [, setLocation] = useLocation();
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const handleViewDetails = () => {
     setLocation(`/destination/${destination.id}`);
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent card click when clicking favorite button
+    toggleFavorite(destination.id);
   };
 
   return (
@@ -42,10 +49,15 @@ export default function DestinationCard({ destination, onViewDetails }: Destinat
           <Button
             variant="ghost"
             size="sm"
-            className="bg-white/20 backdrop-blur-sm text-white p-2 rounded-full hover:bg-red-500/80 hover:text-white transition-all duration-300 transform hover:scale-110 hover:rotate-12 group-hover:animate-bounce"
+            className={`backdrop-blur-sm p-2 rounded-full transition-all duration-300 transform hover:scale-110 hover:rotate-12 group-hover:animate-bounce ${
+              isFavorite(destination.id) 
+                ? 'bg-red-500/90 text-white hover:bg-red-600/90' 
+                : 'bg-white/20 text-white hover:bg-red-500/80 hover:text-white'
+            }`}
+            onClick={handleFavoriteClick}
             data-testid={`button-favorite-${destination.id}`}
           >
-            <Heart className="h-4 w-4" />
+            <Heart className={`h-4 w-4 ${isFavorite(destination.id) ? 'fill-current' : ''}`} />
           </Button>
         </div>
       </div>
