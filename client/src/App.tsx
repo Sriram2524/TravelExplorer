@@ -21,14 +21,11 @@ function AppRoutes() {
 }
 
 function App() {
-  // Configure base path for GitHub Pages deployment
-  const basePath = import.meta.env.PROD ? "/TravelExplorer" : "";
-  
   return (
     <QueryClientProvider client={queryClient}>
       <FavoritesProvider>
         <TooltipProvider>
-          <Router base={basePath}>
+          <Router>
             <Toaster />
             <AppRoutes />
           </Router>
